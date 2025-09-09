@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAEP - Sistema de Avaliação da Educação Profissional</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="logo-placeholder">SENAI</div>
+                        <div class="system-title">
+                            <h1>SAEP</h1>
+                            <p>Sistema de Avaliação da Educação Profissional</p>
+                        </div>
+                    </div>
+                    <div class="timer-container" id="timerContainer" style="display: none;">
+                        <div class="timer-display">
+                            <span class="timer-label">Tempo restante:</span>
+                            <span class="timer-time" id="timerDisplay">03:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tab-navigation">
+            <div class="container">
+                <div class="tab-list">
+                    <button class="tab-btn active" data-tab="identificacao">
+                        <span class="tab-icon">👤</span>
+                        <span class="tab-text">Identificação</span>
+                    </button>
+                    <button class="tab-btn disabled" data-tab="prova" id="provaTab">
+                        <span class="tab-icon">📝</span>
+                        <span class="tab-text">Prova</span>
+                    </button>
+                    <button class="tab-btn disabled" data-tab="resultados" id="resultadosTab">
+                        <span class="tab-icon">📊</span>
+                        <span class="tab-text">Resultados</span>
+                    </button>
+                    <button class="tab-btn disabled" data-tab="relatorios" id="relatoriosTab">
+                        <span class="tab-icon">📋</span>
+                        <span class="tab-text">Relatórios</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="container">
+                <!-- Identificação Tab -->
+                <div class="tab-content active" id="identificacao">
+                    <div class="content-header">
+                        <h2>Dados de Identificação</h2>
+                        <p>Preencha seus dados para iniciar a avaliação</p>
+                    </div>
+                    
+                    <form class="identification-form" id="identificationForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="nomeAluno">Nome Completo</label>
+                                <input type="text" class="form-control" id="nomeAluno" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="matricula">Matrícula</label>
+                                <input type="text" class="form-control" id="matricula" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="curso">Curso Técnico</label>
+                                <select class="form-control" id="curso" required>
+                                    <option value="">Selecione o curso</option>
+                                    <option value="Automação Industrial">Automação Industrial</option>
+                                    <option value="Eletrotécnica">Eletrotécnica</option>
+                                    <option value="Mecânica">Mecânica</option>
+                                    <option value="Informática">Informática</option>                                 
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="turma">Turma</label>
+                                <input type="text" class="form-control" id="turma" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn--primary">
+                                Iniciar Avaliação
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Prova Tab -->
+                <div class="tab-content" id="prova">
+                    <div class="exam-container">
+                        <div class="exam-header">
+                            <div class="question-counter">
+                                <span id="currentQuestion">1</span> de <span id="totalQuestions">10</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="question-container" id="questionContainer">
+                            <!-- Questions will be loaded here -->
+                        </div>
+                        
+                        <div class="exam-navigation">
+                            <button class="btn btn--secondary" id="prevBtn" disabled>
+                                Anterior
+                            </button>
+                            <button class="btn btn--primary" id="nextBtn">
+                                Próxima
+                            </button>
+                            <button class="btn btn--primary" id="finishBtn" style="display: none;">
+                                Finalizar Prova
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resultados Tab -->
+                <div class="tab-content" id="resultados">
+                    <div class="results-container">
+                        <div class="results-header">
+                            <h2>Resultados da Avaliação</h2>
+                            <div class="student-info" id="studentInfo"></div>
+                        </div>
+                        
+                        <div class="results-grid">
+                            <div class="result-card primary-result">
+                                <h3>Nota TRI</h3>
+                                <div class="score-display" id="triScore">0</div>
+                                <div class="performance-level" id="performanceLevel">Calculando...</div>
+                            </div>
+                            
+                            <div class="result-card">
+                                <h3>Análise de Desempenho</h3>
+                                <div class="performance-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Acertos:</span>
+                                        <span class="stat-value" id="correctAnswers">0/10</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Coerência:</span>
+                                        <span class="stat-value" id="coherenceIndex">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="charts-container">
+                            <div class="chart-card">
+                                <h3>Distribuição de Acertos por Dificuldade</h3>
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="difficultyChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="chart-card">
+                                <h3>Análise de Coerência</h3>
+                                <div class="coherence-analysis" id="coherenceAnalysis">
+                                    <!-- Coherence analysis will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="recommendations-container">
+                            <h3>Sugestões Pedagógicas</h3>
+                            <div class="recommendations-list" id="recommendationsList">
+                                <!-- Recommendations will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Relatórios Tab -->
+                <div class="tab-content" id="relatorios">
+                    <div class="reports-container">
+                        <div class="content-header">
+                            <h2>Relatórios</h2>
+                            <p>Gere e salve seus relatórios de desempenho</p>
+                        </div>
+                        
+                        <div class="reports-grid">
+                            <div class="report-card">
+                                <div class="report-icon">📄</div>
+                                <h3>Relatório Individual</h3>
+                                <p>Relatório completo com análise detalhada do desempenho</p>
+                                <button class="btn btn--primary" id="generatePdfBtn">
+                                    Gerar PDF
+                                </button>
+                            </div>
+                            
+                            <div class="report-card">
+                                <div class="report-icon">☁️</div>
+                                <h3>Salvar no Google Drive</h3>
+                                <p>Salve automaticamente seus relatórios na nuvem</p>
+                                <button class="btn btn--secondary" id="saveToGoogleDriveBtn">
+                                    Conectar Google Drive
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-status" id="uploadStatus" style="display: none;">
+                            <div class="status-message" id="statusMessage"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <p>&copy; 2025 SENAI - Serviço Nacional de Aprendizagem Industrial</p>
+                        <p>Sistema de Avaliação baseado na Teoria de Resposta ao Item (TRI)</p>
+                    </div>
+                    <div class="footer-version">
+                        <span>Kronemberger</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
