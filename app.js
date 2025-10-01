@@ -2,18 +2,19 @@ class SAEPSystem {
     constructor() {
         // System data
         this.questions = [
-            {
-                id: 1, weight: 1, difficulty: -0.5, discrimination: 1.2, guessing: 0.2,
-                text: "Uma indústria de automação está implementando um sistema de controle para um processo de envase automático, que requer a integração de sensores de nível com atuadores para garantir a segurança e eficiência do processo. Desenvolver um algoritmo de controle utilizando um CLP que assegure a operação segura do sistema de envase, considerando a lógica de acionamento e as normas de segurança industrial.",
-                options: [
-                    "A ( ) Implementar um algoritmo que desliga a bomba de envase quando o nível do tanque atinge o limite superior, sem considerar a ativação de alarmes.",
-                    "B ( ) Utilizar um algoritmo que aciona a bomba de envase apenas quando o nível do tanque estiver abaixo do limite inferior, com um temporizador de 5 segundos para evitar acionamentos frequentes.",
-                    "C ( ) Desenvolver um algoritmo que aciona a bomba de envase quando o nível do tanque atinge o limite inferior e desliga ao atingir o limite superior, incluindo um sinal de alarme para cada condição",
-                    "D ( ) Programar o CLP para manter a bomba de envase ligada continuamente, desativando-a apenas em caso de falha do sistema.",
-                    "E ( ) Criar um algoritmo que liga a bomba de envase apenas em horários programados, independentemente do nível do tanque."
+            
+			{
+             id: 1, weight: 1, difficulty: 2, discrimination: 1, guessing: 0.2,
+             text: "Identifique qual é a principal consideração a ser feita ao desenvolver a interface de supervisão para garantir a eficiência do sistema de automação proposto. ",
+             options: [
+                  "A ( ) Assegurar que a interface seja intuitiva e que permita uma rápida resposta do operador às condições da máquina. ",
+                  "B ( ) Utilizar uma única rede de comunicação para todos os dispositivos, independentemente das suas capacidades. ",
+                  "C ( ) Desenvolver a interface apenas com informações de monitoramento, sem incluir controles manuais. ",
+                  "D ( ) Implementar um sistema de monitoramento que não permite personalizações por parte dos usuários. ",
+                  "E ( ) Garantir que a interface de supervisão funcione exclusivamente em um ambiente de rede local, sem considerar acesso remoto. "
                 ],
-                correctIndex: 2
-            },
+                correctIndex: 0
+                },
             {
                 id: 2, weight: 1, difficulty: -0.5, discrimination: 1.2, guessing: 0.2,
                 text: "Uma indústria de automação está desenvolvendo um sistema de controle para um processo de embalagem que envolve a utilização de sensores digitais para monitoramento de presença e acionamento de atuadores. É necessário garantir que as variáveis de controle estejam alinhadas com as normas de segurança e eficiência operacional.",
